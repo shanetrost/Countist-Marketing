@@ -512,7 +512,7 @@ const jsonLd = [
           <div class="faq_header fade-in-bottom">
             <h2 class="heading-style-h2">Need Help?</h2>
             <a href="/contact" class="text-color-accent" style="text-decoration:underline;font-size:1rem;">Contact us to get an answer</a>
-            <img src="/images/harold.png" loading="lazy" alt="" aria-hidden="true" class="faq-harold-img" style="width:60%;display:block;margin-top:1.5rem;" />
+            <img src="/images/harold.png" loading="lazy" alt="" aria-hidden="true" class="faq-harold-img" style="width:60%;margin-top:1.5rem;" />
           </div>
           <div class="faq_list fade-in-bottom">
             <details class="faq_item">
@@ -850,12 +850,7 @@ const jsonLd = [
   }
   @media (max-width: 767px) {
     .faq_component { grid-template-columns: 1fr; gap: 2rem; }
-    .faq_header { position: static; }
-    .faq-harold-img { display: none; }
-  }
-  .faq_header {
-    position: sticky;
-    top: 6rem;
+    .faq-harold-img { display: none !important; }
   }
   .faq_header h2 {
     margin: 1rem 0 0.75rem;
