@@ -38,6 +38,12 @@ Astro 4.x, satori + @resvg/resvg-js (OG image generation at build time via `scri
 
 Railway (`railway.toml`): nixpacks builder, `buildCommand = "npx astro build"`, `startCommand = "node server.js"`, healthcheck `/`. This is Railway-hosted, **not Netlify** — verified 2026-07-31 in a prior session when this fact was needed to correct a wrong assumption about a different repo (Countist-Marketing was the one actually checked and confirmed Railway-hosted at that time; don't assume otherwise without re-verifying).
 
+## Contact Form
+
+**`/contact` given a real form for the first time (2026-08-22).** Previously mailto-only — found while reconciling the portfolio-wide "One Front Door" contact-form consolidation against what's actually live; the original audit missed this repo entirely (it treated Countist as having no public lead form, not realizing this marketing site has its own `/contact` separate from the `Countist-App` product). Added a form (name/email/message) using this site's existing but previously-unused Webflow form component classes (`form_fields`, `form_field`, `form_button`, `form_message-success`/`-error` in `public/css/countist.css`) rather than inventing new styles. POSTs to the shared intake service (`product: "Countist"`, `type: "Contact"`) — see `~/Projects/CLAUDE_OS/TASKS.md` 2026-08-22 for the full migration. The mailto CTA above the form stays as the fast path.
+
+**Also fixed:** the intake service's `ALLOWED_ORIGINS` only had `app.countist.app` (the product app's domain) — this site's real domain, `countist.app`, was missing and would have silently CORS-blocked every real submission. Fixed on the intake service side (Railway env var), not in this repo.
+
 ## Known Items (not yet investigated further this session)
 
 - Recent commits (7/29) fixed a sticky-FAQ-header bug and an unreliable mobile image-hide rule on the FAQ page — both CSS-only fixes, verified in headless Chromium per the commit message. No outstanding issue flagged.
