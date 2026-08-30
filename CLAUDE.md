@@ -64,7 +64,7 @@ Railway (`railway.toml`): nixpacks builder, `buildCommand = "npx astro build"`, 
 - **WRONG** — anything asserted mid-session that turned out false and had to be corrected. **Never omit these.** Highest-value lines in the log; they never appear in a commit message.
 - **OPEN** — what's left, split into what needs Shane's hands vs. what a future session can pick up
 
-**2. This file (`CLAUDE.md`)** — architecture changes, new pages, deployment gotchas, footer date.
+**2. This file (`CLAUDE.md`)** — architecture changes, new pages, deployment gotchas, footer date. **Doc edits auto-commit, locked 2026-08-30 (Shane's call, portfolio-wide) — commit and push directly rather than leaving it uncommitted for later review**, same as code already does here. Full rationale: `~/Projects/CLAUDE_OS/memory/decisions.md`.
 
 **3. session_log.md** (`~/Projects/CLAUDE_OS/memory/session_log.md`) — one 3-line entry (Date | Focus | Output/Decision), drop the oldest to keep 3, bump "Last updated".
 
