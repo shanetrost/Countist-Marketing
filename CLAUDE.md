@@ -66,7 +66,7 @@ Railway (`railway.toml`): nixpacks builder, `buildCommand = "npx astro build"`, 
 
 **2. This file (`CLAUDE.md`)** — architecture changes, new pages, deployment gotchas, footer date. **Doc edits auto-commit, locked 2026-08-30 (Shane's call, portfolio-wide) — commit and push directly rather than leaving it uncommitted for later review**, same as code already does here. Full rationale: `~/Projects/CLAUDE_OS/memory/decisions.md`.
 
-**3. session_log.md** (`~/Projects/CLAUDE_OS/memory/session_log.md`) — one 3-line entry (Date | Focus | Output/Decision), drop the oldest to keep 3, bump "Last updated".
+**3. session_log.md** (`~/Projects/CLAUDE_OS/memory/session_log.md`) — **one row per calendar day, not per session.** Changed 2026-08-31: the old keep-3-sessions rule let a single busy day consume the whole table, and on 2026-08-30 it did. Mechanics, all five required: (a) if today's row already exists, APPEND a short clause to its cells; never rewrite or regenerate an existing row. (b) Read that row immediately before appending; if it already carries this session's identifier, you already wrote it, stop. (c) Cap each day-row at roughly 400 words; at the cap, compress that row's oldest clauses rather than growing it. (d) Keep 5 day-rows, dropping the oldest DAY from the correct end of this oldest-first table. (e) Detail stays in TASKS.md; the row points, it does not narrate. Bump "Last updated".
 
 **4. NOTION SYNC block** — append inside the same TASKS.md entry. Notion is the live task system and every session reconciles against it:
 
