@@ -18,7 +18,7 @@ Countist is a web application (app.countist.app) that lets users manually track 
 - **Privacy model**: No bank connections, ever. All data is manually entered by the user.
 - **Data policy**: User data is never sold, shared, or used for advertising.
 - **Founded**: 2024
-- **Contact**: countist@structurl.io
+- **Contact**: hello@countist.app
 
 ## Pages
 
