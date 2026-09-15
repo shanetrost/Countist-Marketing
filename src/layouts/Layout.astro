@@ -61,13 +61,27 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : null;
     })();
   </script>
 
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-WSP5GF5C');</script>
-  <!-- End Google Tag Manager -->
+  <!-- GA4, direct gtag (replaced Tag Manager container GTM-WSP5GF5C on 2026-09-14,
+       so every tracking change goes through a commit). Same measurement ID.
+       Named in the privacy policy (src/pages/privacy.astro); change both together. -->
+  <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-W7QZSNR0EC"></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-W7QZSNR0EC');
+    // cta_click: ported from the Tag Manager container. Fires on any link to
+    // the app's /join page, with the link text and the page path, exactly as
+    // the container's GA4 event tag did.
+    document.addEventListener('click', function (e) {
+      var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+      if (!a || a.href.indexOf('app.countist.app/join') === -1) return;
+      gtag('event', 'cta_click', {
+        cta_label: (a.innerText || a.textContent || '').replace(/\s+/g, ' ').trim(),
+        cta_page: location.pathname
+      });
+    }, true);
+  </script>
 
   <!-- Mailchimp -->
   <script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/d36f24c5dfaa3f2e5534959e8/da600ae895cb75a1ebb8235a8.js");</script>
@@ -311,10 +325,6 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : null;
   </style>
 </head>
 <body>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WSP5GF5C"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
 
   <div class="page-wrapper">
     <div class="global-styles w-embed">
