@@ -34,6 +34,10 @@ railway.toml     Railway deploy config
 
 Astro 4.x, satori + @resvg/resvg-js (OG image generation at build time via `scripts/generate-og.mjs`, runs as the `prebuild` npm script), plain Node `http` for serving. No React/Vue/Svelte islands currently in use. No backend framework, no database.
 
+## Analytics
+
+**Direct GA4 tag since 2026-09-14 (`dbc3a37`); Google Tag Manager removed.** `src/layouts/Layout.astro` loads `G-W7QZSNR0EC` (property 517169966, "Countist Landing Page") in an `is:inline` block, plus a click listener that sends `cta_click` (`cta_label` = link text, `cta_page` = page path) on any link to `app.countist.app/join`. It's a port of the old container GTM-WSP5GF5C, which also held that event. Keep `is:inline`: without it Astro bundles the script into a deferred module and `gtag` stops being global. The privacy page (`src/pages/privacy.astro`) names Google Analytics; change the tag and the policy together, starting with the canonical `~/Projects/CLAUDE_OS/legal/policies/PRIVACY_countist.md`. The app at app.countist.app has its own tag (`G-HRM1ZG5JB4`, Countist-App repo), whose fate is an open decision.
+
 ## Deployment
 
 Railway (`railway.toml`): nixpacks builder, `buildCommand = "npx astro build"`, `startCommand = "node server.js"`, healthcheck `/`. This is Railway-hosted, **not Netlify** — verified 2026-07-31 in a prior session when this fact was needed to correct a wrong assumption about a different repo (Countist-Marketing was the one actually checked and confirmed Railway-hosted at that time; don't assume otherwise without re-verifying).
