@@ -50,9 +50,12 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : null;
 
   {googleVerification && <meta name="google-site-verification" content={googleVerification} />}
 
-  <!-- Redirect authenticated users to the app -->
+  <!-- Redirect authenticated users to the app, except on the legal pages:
+       the app links signed-in users to /privacy, and the policy and terms
+       have to be readable by everyone. -->
   <script>
     (function () {
+      if (/^\/(privacy|terms)(\/|$)/.test(window.location.pathname)) return;
       var uat = document.cookie.split(';').map(function(c){ return c.trim(); }).find(function(c){ return c.startsWith('__client_uat='); });
       if (uat) {
         var val = parseInt(uat.split('=')[1], 10);
