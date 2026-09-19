@@ -59,7 +59,7 @@ Railway (`railway.toml`): nixpacks builder, `buildCommand = "npx astro build"`, 
 
 ## Legal pages (2026-09-18)
 
-- `/privacy` renders `src/content/privacy-body.html`, generated from `~/Projects/CLAUDE_OS/legal/policies/``PRIVACY_countist.md` (one policy for the site, web app and iOS). `terms.astro` names the party **Fylum Agency LLC d/b/a Structurl**; it previously said "Structurl, LLC", which is not an entity. The footer reads © Structurl.
+- `/privacy` renders `src/content/privacy-body.html`, generated from `~/Projects/CLAUDE_OS/legal/policies/PRIVACY_countist.md` (one policy for the site, web app and iOS). `terms.astro` names the party **Fylum Agency LLC d/b/a Structurl**; it previously said "Structurl, LLC", which is not an entity. The footer reads © Structurl.
 - **`Layout.astro`'s signed-in redirect skips `/privacy` and `/terms` (PR #7). Keep that exemption.** Without it, a visitor with a Clerk `__client_uat` cookie is bounced to the app, and since the app links to `countist.app/privacy`, signed-in users could never read the policy.
 - A stray empty `.git_write_test` (2026-09-18 13:57, apparently from a crashed Cowork write probe, which also left a stale `.git/index.lock`) is untracked; don't commit it.
 
