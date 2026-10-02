@@ -1,0 +1,88 @@
+# PR overlap — one open PR per file at a time.
+#
+# Two open PRs that change the same file can each look fine on their own and
+# still break each other once both land (the laptop and the Mini each opening
+# one, say). On every PR event this re-checks all open PRs and sets a commit
+# status, "PR overlap", on each one's head commit:
+#   success  no older open PR touches any of the same files
+#   failure  an older open PR does; merge or close that one first
+# The oldest PR (lowest number) is never blocked, so there is always one that
+# can go in. When it merges or closes, the next run clears the one behind it.
+# Draft PRs count: a draft is still open work on those files.
+#
+# Enforcement comes from making "PR overlap" a required status check on the
+# default branch (repo Settings → Rules); this file only reports.
+
+name: PR overlap
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review, converted_to_draft, closed]
+
+permissions:
+  contents: read
+  pull-requests: read
+  statuses: write
+
+# Each run re-checks every open PR, so runs must not interleave; a queued run
+# always sees the latest state.
+concurrency:
+  group: pr-overlap
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const CONTEXT = 'PR overlap';
+
+            const prs = (await github.paginate(github.rest.pulls.list, {
+              owner, repo, state: 'open', per_page: 100,
+            })).sort((a, b) => a.number - b.number);
+
+            // Renames count under both names: the old path is being changed too.
+            const files = new Map();
+            for (const pr of prs) {
+              const changed = await github.paginate(github.rest.pulls.listFiles, {
+                owner, repo, pull_number: pr.number, per_page: 100,
+              });
+              const set = new Set();
+              for (const f of changed) {
+                set.add(f.filename);
+                if (f.previous_filename) set.add(f.previous_filename);
+              }
+              files.set(pr.number, set);
+            }
+
+            for (const pr of prs) {
+              const mine = files.get(pr.number);
+              const blockers = [];
+              for (const older of prs) {
+                if (older.number >= pr.number) break;
+                const shared = [...files.get(older.number)].filter(f => mine.has(f));
+                if (shared.length) blockers.push({ pr: older, shared });
+              }
+
+              let state = 'success';
+              let description = 'No other open PR changes these files';
+              let target_url;
+              if (blockers.length) {
+                const first = blockers[0];
+                const names = first.shared.slice(0, 2).map(f => f.split('/').pop()).join(', ');
+                const more = first.shared.length > 2 ? ` +${first.shared.length - 2}` : '';
+                const others = blockers.length > 1 ? ` (and ${blockers.length - 1} more)` : '';
+                state = 'failure';
+                description = `#${first.pr.number} also changes ${names}${more}${others}. Merge or close it first.`;
+                target_url = first.pr.html_url;
+              }
+
+              await github.rest.repos.createCommitStatus({
+                owner, repo, sha: pr.head.sha, state, context: CONTEXT,
+                description: description.slice(0, 140), target_url,
+              });
+              core.info(`#${pr.number} ${state}: ${description}`);
+            }
