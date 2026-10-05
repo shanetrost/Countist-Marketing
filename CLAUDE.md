@@ -67,6 +67,8 @@ Railway (`railway.toml`): nixpacks builder, `buildCommand = "npx astro build"`, 
 
 **Trigger:** the session ends, or Shane says "wrap up" / "log this" / "update memory".
 
+**Since 2026-10-05: never edit `~/Projects/CLAUDE_OS/TASKS.md` or `memory/session_log.md` directly, from any machine.** Write this whole entry (sections 1, 3 and 4 below) as ONE new file in `~/Projects/CLAUDE_OS/inbox/` (name and format: `inbox/README.md`); the session_log clause goes in its `session_log:` field. The Mac Mini is the only writer of those files and folds the inbox in within about 20 minutes, so the two machines never edit the same lines. Where this section and CLAUDE_OS's CLAUDE.md differ, CLAUDE_OS wins.
+
 **TASKS.md is the single source of truth for project execution history.** If work isn't written there, it did not happen as far as every future session is concerned. Write all five sections. Do not summarize in chat instead of writing the files.
 
 **1. TASKS.md — append under TODAY** (`~/Projects/CLAUDE_OS/TASKS.md`), using these headings:
@@ -78,7 +80,7 @@ Railway (`railway.toml`): nixpacks builder, `buildCommand = "npx astro build"`, 
 
 **2. This file (`CLAUDE.md`)** — architecture changes, new pages, deployment gotchas, footer date. **Doc edits auto-commit, locked 2026-08-30 (Shane's call, portfolio-wide) — commit and push directly rather than leaving it uncommitted for later review**, same as code already does here. Full rationale: `~/Projects/CLAUDE_OS/memory/decisions.md`.
 
-**3. session_log.md** (`~/Projects/CLAUDE_OS/memory/session_log.md`) — **one row per calendar day, not per session.** Changed 2026-08-31: the old keep-3-sessions rule let a single busy day consume the whole table, and on 2026-08-30 it did. Mechanics, all five required: (a) if today's row already exists, APPEND a short clause to its cells; never rewrite or regenerate an existing row. (b) Read that row immediately before appending; if it already carries this session's identifier, you already wrote it, stop. (c) Cap each day-row at roughly 400 words; at the cap, compress that row's oldest clauses rather than growing it. (d) Keep 5 day-rows, dropping the oldest DAY from the correct end of this oldest-first table. (e) Detail stays in TASKS.md; the row points, it does not narrate. Bump "Last updated".
+**3. session_log.md** (`~/Projects/CLAUDE_OS/memory/session_log.md`) — **one row per calendar day, not per session.** Changed 2026-08-31: the old keep-3-sessions rule let a single busy day consume the whole table, and on 2026-08-30 it did. Mechanics, all five required: (a) if today's row already exists, APPEND a short clause to its cells; never rewrite or regenerate an existing row. (b) Read that row immediately before appending; if it already carries this session's identifier, you already wrote it, stop. (c) Cap each day-row at roughly 400 words; at the cap, compress that row's oldest clauses rather than growing it. (d) Keep 5 day-rows, dropping the oldest DAY from the correct end of this oldest-first table. (e) Detail stays in TASKS.md; the row points, it does not narrate.
 
 **4. NOTION SYNC block** — append inside the same TASKS.md entry. Notion is the live task system and every session reconciles against it:
 
