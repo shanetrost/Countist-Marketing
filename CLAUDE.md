@@ -63,6 +63,14 @@ Railway (`railway.toml`): nixpacks builder, `buildCommand = "npx astro build"`, 
 - **`Layout.astro`'s signed-in redirect skips `/privacy` and `/terms` (PR #7). Keep that exemption.** Without it, a visitor with a Clerk `__client_uat` cookie is bounced to the app, and since the app links to `countist.app/privacy`, signed-in users could never read the policy.
 - A stray empty `.git_write_test` (2026-09-18 13:57, apparently from a crashed Cowork write probe, which also left a stale `.git/index.lock`) is untracked; don't commit it.
 
+## Header and mobile menu (2026-10-15, PRs #16-#19)
+
+- **Signed-in header.** The redirect also skips `/contact` and `/faqs` (#15). On those four pages an inline script in `Layout.astro` swaps the header link to "Open app" → app.countist.app when `__client_uat` > 0, the same test as the redirect (#16). It also adds `is-signed-in`, which gives the link a left margin so it doesn't hit the logo at 320px. `.nav_end` has `min-width: max-content` on mobile, and the signed-out header measures identical to before.
+- **Menu icon.** `.hamburger_6_line` is sized by `--thickness`, `--width` and `--gap`, defined on `.hamburger_6_wrap` in `public/css/countist.css` (#17). The Astro migration had dropped them, so the icon was invisible from 6cbb569 until 2026-10-15.
+- **Menu panel.** `.nav_menu.w--open` is `position: absolute; top: 100%` under `.nav_component` (#18). Don't make it `position: fixed`: the scrolled pill's `backdrop-filter` captures fixed children. `.nav_component` needs `width: auto`, because countist.css's `width: 100%` otherwise overrides left/right and the scrolled pill hangs off the right edge.
+- **Grids.** Use `minmax(0, 1fr)` where a column holds fixed-width content: the home stat cards overflowed at 768-795px with plain `1fr` (#19).
+- **Verifying a deploy.** Page `<style>` blocks ship minified in hashed `/_astro/*.css`, not in the HTML, so grepping the HTML for a CSS change never matches. Check `railway deployment list`, then the hashed file. When loading the live site in puppeteer, block GA requests.
+
 ## CLAUDE_OS End-of-Session Handoff
 
 **Trigger:** the session ends, or Shane says "wrap up" / "log this" / "update memory".
