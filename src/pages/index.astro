@@ -703,7 +703,9 @@ const jsonLd = [
   /* Stat cards */
   .stats-cards {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    /* minmax(0, 1fr), not 1fr: a plain 1fr column can't shrink below its
+       180px chart, and at 768-795px the three cards overflowed the page. */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.5rem;
   }
   .stat-card {
@@ -717,12 +719,14 @@ const jsonLd = [
     gap: 0.75rem;
   }
   .stat-chart {
+    max-width: 100%;
     line-height: 0;
     height: 190px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
+  .stat-chart svg { max-width: 100%; height: auto; }
   .stat-number {
     font-family: 'BIZ UDPMincho', Georgia, serif;
     font-size: clamp(3rem, 6vw, 4.5rem);
