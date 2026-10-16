@@ -182,6 +182,9 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : null;
       top: 0;
       left: 0;
       right: 0;
+      /* countist.css sets width: 100%, which overrides left/right: the
+         scrolled pill kept full width and hung off the right edge. */
+      width: auto;
       z-index: 1000;
       overflow: visible;
       background-color: transparent;
@@ -299,11 +302,15 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : null;
       .nav_menu.w--open {
         display: flex;
         flex-direction: column;
-        position: fixed;
-        top: 4rem;
+        /* Anchored to .nav_component (position: fixed), so it sits right
+           under the header, and under the floating pill once scrolled (the
+           pill's backdrop-filter would also capture a position: fixed panel).
+           No "inset: unset": it reset top/left/right and the panel opened as
+           a small box over the logo. */
+        position: absolute;
+        top: 100%;
         left: 0;
         right: 0;
-        inset: unset;
         height: auto;
         background: var(--background-color--background-secondary, #f5f0eb);
         padding: 1.5rem;
