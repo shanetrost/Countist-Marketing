@@ -316,6 +316,12 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : null;
         align-items: flex-start;
       }
       .nav_button { display: flex; cursor: pointer; }
+      /* Never narrower than its contents: at 320px "Open app" (signed-in
+         header) plus the menu button would otherwise overflow onto the logo.
+         The logo is max-width:100% and shrinks instead. The margin applies
+         only signed in, so the signed-out header is unchanged. */
+      .nav_end { min-width: max-content; }
+      .nav_signin-link.is-signed-in { margin-left: 0.75rem; }
       .nav_component.is-scrolled {
         top: 0.5rem;
         left: 0.75rem;
@@ -347,7 +353,22 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : null;
             </div>
           </nav>
           <div class="nav_end">
-            <a href="https://app.countist.app/sign-in" class="nav_signin-link">Sign In</a>
+            <a href="https://app.countist.app/sign-in" class="nav_signin-link" id="nav-signin">Sign In</a>
+            <!-- Signed-in customers can now stay on /contact, /faqs, /privacy and
+                 /terms (see the redirect exemption in <head>, PR #15). Show them
+                 "Open app" instead of "Sign In". Same cookie test as the redirect.
+                 Inline so it runs before first paint: no flash of "Sign In". -->
+            <script is:inline>
+              (function () {
+                var uat = document.cookie.split(';').map(function(c){ return c.trim(); }).find(function(c){ return c.startsWith('__client_uat='); });
+                if (!uat || !(parseInt(uat.split('=')[1], 10) > 0)) return;
+                var a = document.getElementById('nav-signin');
+                if (!a) return;
+                a.href = 'https://app.countist.app';
+                a.textContent = 'Open app';
+                a.classList.add('is-signed-in');
+              })();
+            </script>
             <div class="nav_button w-nav-button" role="button" aria-label="Toggle navigation" tabindex="0">
               <div class="hamburger_6_wrap">
                 <div class="hamburger_6_line"></div>
