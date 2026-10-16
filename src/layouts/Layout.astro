@@ -397,7 +397,7 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : null;
       <div class="padding-global">
         <div class="w-layout-blockcontainer container-large w-container">
           <div class="footer">
-            <div class="footer_cta">
+            <div class="footer_cta" id="footer-cta">
               <div class="padding-top padding-xhuge fade-in-bottom">
                 <div class="cta">
                   <div class="badge">
@@ -414,6 +414,17 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : null;
                 </div>
               </div>
             </div>
+            <!-- Signed-in customers (who can stay on /contact, /faqs, /privacy and
+                 /terms) don't need the free-trial pitch. Same cookie test as the
+                 redirect and the header "Open app" swap. -->
+            <script is:inline>
+              (function () {
+                var uat = document.cookie.split(';').map(function(c){ return c.trim(); }).find(function(c){ return c.startsWith('__client_uat='); });
+                if (!uat || !(parseInt(uat.split('=')[1], 10) > 0)) return;
+                var cta = document.getElementById('footer-cta');
+                if (cta) cta.style.display = 'none';
+              })();
+            </script>
             <div class="w-layout-grid footer_body">
               <div class="footer_logo-wrapper">
                 <a href="https://www.councilforeconed.org/" target="_blank" rel="noopener noreferrer">
