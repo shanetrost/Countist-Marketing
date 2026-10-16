@@ -2628,6 +2628,12 @@ figcaption {
 }
 
 .hamburger_6_wrap {
+  /* Set by a Webflow embed that was dropped in the Astro migration (6cbb569);
+     undefined, they rendered the three lines at 0x0. 24px = the mobile
+     .nav_button's content width (2.5rem minus 1rem left padding). */
+  --thickness: 2px;
+  --width: 24px;
+  --gap: 5px;
   grid-row-gap: var(--gap);
   flex-flow: column;
   justify-content: center;
